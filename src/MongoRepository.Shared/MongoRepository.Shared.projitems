@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f769b92b-0280-4dfb-8d0a-e6fc16d56e41</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>MongoRepository.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CollectionName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Entity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEntity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RepositoryManager\CollectionStatsResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RepositoryManager\IRepositoryManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RepositoryManager\MongoRepositoryManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RepositoryManager\ValidateCollectionResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repository\InMemoryRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repository\IRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repository\MongoRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{0A3831CB-6067-4B1F-9279-ABE20F57CAE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1894FCE2-8451-4285-86E0-596123C3785C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MongoRepository.Shared", "src\MongoRepository.Shared\MongoRepository.Shared.shproj", "{F769B92B-0280-4DFB-8D0A-E6FC16D56E41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepostiory.Standard", "src\MongoRepostiory.Standard\MongoRepostiory.Standard.csproj", "{33531B97-EC14-47C7-81E7-BF79FF781CF1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InMemoryRepository.Core.Tests", "tests\InMemoryRepository.Core.Tests\InMemoryRepository.Core.Tests.csproj", "{6C686244-DB76-4FFA-82B7-63B54FCD9E04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoRepository.Core.Tests", "tests\MongoRepository.Core.Tests\MongoRepository.Core.Tests.csproj", "{6D17EF35-6D57-4F0D-9591-1FC9BF2CAE9A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MongoRepository.Shared.Tests", "tests\MongoRepository.Shared.Tests\MongoRepository.Shared.Tests.shproj", "{B39DD5F2-46CE-4F5E-A857-DE3DBC0502CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository.Core", "src\MongoRepository.Core\MongoRepository.Core.csproj", "{9C9D1AB8-E099-463B-93C6-DA3E4A0BCC54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository.Desktop", "src\MongoRepository.Desktop\MongoRepository.Desktop.csproj", "{47678534-6D34-4F44-B2A4-52498FCB6258}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoRepository.Desktop.Tests", "tests\MongoRepository.Desktop.Tests\MongoRepository.Desktop.Tests.csproj", "{96CB81C3-3530-4437-95B4-843BDA9B03CD}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\MongoRepository.Shared\MongoRepository.Shared.projitems*{47678534-6d34-4f44-b2a4-52498fcb6258}*SharedItemsImports = 4
+		tests\MongoRepository.Shared.Tests\MongoRepository.Shared.Tests.projitems*{96cb81c3-3530-4437-95b4-843bda9b03cd}*SharedItemsImports = 4
+		tests\MongoRepository.Shared.Tests\MongoRepository.Shared.Tests.projitems*{b39dd5f2-46ce-4f5e-a857-de3dbc0502cd}*SharedItemsImports = 13
+		src\MongoRepository.Shared\MongoRepository.Shared.projitems*{f769b92b-0280-4dfb-8d0a-e6fc16d56e41}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33531B97-EC14-47C7-81E7-BF79FF781CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33531B97-EC14-47C7-81E7-BF79FF781CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33531B97-EC14-47C7-81E7-BF79FF781CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33531B97-EC14-47C7-81E7-BF79FF781CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C686244-DB76-4FFA-82B7-63B54FCD9E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C686244-DB76-4FFA-82B7-63B54FCD9E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C686244-DB76-4FFA-82B7-63B54FCD9E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C686244-DB76-4FFA-82B7-63B54FCD9E04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D17EF35-6D57-4F0D-9591-1FC9BF2CAE9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D17EF35-6D57-4F0D-9591-1FC9BF2CAE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D17EF35-6D57-4F0D-9591-1FC9BF2CAE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D17EF35-6D57-4F0D-9591-1FC9BF2CAE9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C9D1AB8-E099-463B-93C6-DA3E4A0BCC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C9D1AB8-E099-463B-93C6-DA3E4A0BCC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C9D1AB8-E099-463B-93C6-DA3E4A0BCC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C9D1AB8-E099-463B-93C6-DA3E4A0BCC54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47678534-6D34-4F44-B2A4-52498FCB6258}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47678534-6D34-4F44-B2A4-52498FCB6258}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47678534-6D34-4F44-B2A4-52498FCB6258}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47678534-6D34-4F44-B2A4-52498FCB6258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96CB81C3-3530-4437-95B4-843BDA9B03CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96CB81C3-3530-4437-95B4-843BDA9B03CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96CB81C3-3530-4437-95B4-843BDA9B03CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96CB81C3-3530-4437-95B4-843BDA9B03CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F769B92B-0280-4DFB-8D0A-E6FC16D56E41} = {0A3831CB-6067-4B1F-9279-ABE20F57CAE6}
+		{33531B97-EC14-47C7-81E7-BF79FF781CF1} = {0A3831CB-6067-4B1F-9279-ABE20F57CAE6}
+		{6C686244-DB76-4FFA-82B7-63B54FCD9E04} = {1894FCE2-8451-4285-86E0-596123C3785C}
+		{6D17EF35-6D57-4F0D-9591-1FC9BF2CAE9A} = {1894FCE2-8451-4285-86E0-596123C3785C}
+		{B39DD5F2-46CE-4F5E-A857-DE3DBC0502CD} = {1894FCE2-8451-4285-86E0-596123C3785C}
+		{9C9D1AB8-E099-463B-93C6-DA3E4A0BCC54} = {0A3831CB-6067-4B1F-9279-ABE20F57CAE6}
+		{47678534-6D34-4F44-B2A4-52498FCB6258} = {0A3831CB-6067-4B1F-9279-ABE20F57CAE6}
+		{96CB81C3-3530-4437-95B4-843BDA9B03CD} = {1894FCE2-8451-4285-86E0-596123C3785C}
+	EndGlobalSection
+EndGlobal

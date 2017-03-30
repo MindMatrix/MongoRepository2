@@ -1,4 +1,13 @@
-Supports .NET Core, .NET Standard and .NET 4.5 as well as MongoDB Async.
+Original code from https://github.com/RobThree/MongoRepository based off of sidecut's https://github.com/sidecut/MongoRepository/tree/v2.4.2 .
+
+Following changes have been done.
+
+- Implemented .NET Core, .NET Standard and .NET 4.5
+- Implemented the async pattern for all interfaces
+- Removed some ObjectId methods since they defeated the purpose of TKey
+- Removed the manager code from the repository tests and added a separate set of tests for this class
+- Created a InMemoryRepository so that my external project doesn't need to hit the MongoDB during unit tests
+
 
 # ![Logo](https://raw.githubusercontent.com/RobThree/MongoRepository/master/mongorepositorylogo.png) Project Description
 

@@ -4,6 +4,7 @@ using MongoRepositoryTests.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MongoRepositoryTests
@@ -62,26 +63,35 @@ namespace MongoRepositoryTests
             Assert.Equal(1, await _customerRepo.CountAsync());
         }
 
-        #endregion Add
+#endregion Add
 
-        #region Update
+#region Update
 
         [Fact]
         public void UpdateEntitySync()
         {
             IRepository<Product> _products = CreateRandomRepository<Product>();
             var product1 = new Product() { Name = "Product1", Description = "Product1", Price = 1 };
-            var product2 = new Product() { Name = "Product2", Description = "Product2", Price = 1 };
+            //var product2 = new Product() { Name = "Product2", Description = "Product2", Price = 1 };
 
-            _products.Add(new Product[] { product1, product2 });
+            _products.Add(product1);
+            //_products.Add(new Product[] { product1, product2 });
 
-            Assert.Equal(2, _products.Count());
-            product1.Price = 2;
-            _products.Update(product1);
-            Assert.Equal(2, _products.Count());
+            Assert.Equal(1, _products.Count());
+            var product2 = new Product() { Id = product1.Id, Name = product1.Name, Description = product1.Description, Price = 2 };
+            //var product4 = new Product() { Id = product2.Id, Name = product2.Name, Description = product2.Description, Price = 4 };
 
-            var actual = _products.GetById(product1.Id);
-            Assert.Equal(product1.Price, actual.Price);
+            _products.Update(product2);
+            Assert.Equal(1, _products.Count());
+
+            {
+                var actual = _products.GetById(product2.Id);
+                Assert.Equal(product2.Price, actual.Price);
+            }
+            {
+                var actual = _products.GetById(product1.Id);
+                Assert.Equal(product2.Price, actual.Price);
+            }
         }
 
         [Fact]
@@ -146,9 +156,9 @@ namespace MongoRepositoryTests
             Assert.Equal(product2.Price, actual2.Price);
         }
 
-        #endregion Update
+#endregion Update
 
-        #region Exists
+#region Exists
 
         [Fact]
         public void ExistsSync()
@@ -198,9 +208,9 @@ namespace MongoRepositoryTests
             Assert.True(await _customerRepo.ExistsAsync(c => c.FirstName == "Exists" && c.LastName == "Async"));
         }
 
-        #endregion Exists
+#endregion Exists
 
-        #region Delete
+#region Delete
 
         [Fact]
         public void DeleteOneEntitySync()
@@ -325,7 +335,7 @@ namespace MongoRepositoryTests
             await _products.DeleteAsync(product1);
             Assert.Equal(1, await _products.CountAsync());
         }
-        #endregion Delete
+#endregion Delete
 
         [Fact]
         public void ComplexEntityTest()
@@ -570,7 +580,7 @@ namespace MongoRepositoryTests
             //Assert.Equal("TestCustomers123", _curstomerRepoManager.Name);
         }
 
-        #region Reproduce issue: https://mongorepository.codeplex.com/discussions/433878
+#region Reproduce issue: https://mongorepository.codeplex.com/discussions/433878
         public abstract class BaseItem : IEntity
         {
             public string Id { get; set; }
@@ -587,10 +597,10 @@ namespace MongoRepositoryTests
         {
             var specialRepository = CreateRandomRepository<SpecialA>();
         }
-        #endregion
+#endregion
 
-        #region Reproduce issue: https://mongorepository.codeplex.com/discussions/572382
-        public abstract class ClassA : Entity
+#region Reproduce issue: https://mongorepository.codeplex.com/discussions/572382
+        public abstract class ClassA : MongoRepository.Entity
         {
             public string Prop1 { get; set; }
         }
@@ -618,7 +628,7 @@ namespace MongoRepositoryTests
             Assert.Equal(1, repo.OfType<ClassB>().Count());
             Assert.Equal(1, repo.OfType<ClassC>().Count());
         }
-        #endregion
+#endregion
 
     }
 }

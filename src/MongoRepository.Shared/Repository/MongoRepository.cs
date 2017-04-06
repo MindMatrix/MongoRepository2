@@ -1,6 +1,7 @@
 ﻿namespace MongoRepository
 {
     using MongoDB.Bson;
+    using MongoDB.Bson.Serialization.Attributes;
     using MongoDB.Driver;
     using MongoDB.Driver.Linq;
     using System;
@@ -19,6 +20,24 @@
         where T : IEntity<TKey>
     {
         protected static readonly TypeInfo _typeInfo = typeof(T).GetTypeInfo();
+
+        private static readonly bool _shouldConvertToObjectId = false;
+
+        static MongoRepository()
+        {
+            if (typeof(TKey) == typeof(string))
+            {
+                var fieldInfo = _typeInfo.GetField("Id", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.GetField | BindingFlags.FlattenHierarchy);
+                if(fieldInfo != null)
+                    _shouldConvertToObjectId = fieldInfo.GetCustomAttribute(typeof(BsonRepresentationAttribute)) != null;
+                else
+                {
+                    var propertyInfo = _typeInfo.GetProperty("Id");
+                    if(propertyInfo != null)
+                        _shouldConvertToObjectId = propertyInfo.GetCustomAttribute(typeof(BsonRepresentationAttribute)) != null;
+                }
+            }
+        }
 
         /// <summary>
         /// MongoCollection field.
@@ -147,6 +166,11 @@
         /// Adds the new entities in the repository.
         /// </summary>
         /// <param name="entities">The entities of type T.</param>
+        //public virtual void Add(IEnumerable<T> entities)
+        //{
+        //    this.collection.InsertMany(entities);
+        //}
+
         public virtual void Add(IEnumerable<T> entities)
         {
             this.collection.InsertMany(entities);
@@ -345,7 +369,7 @@
 
         private static FilterDefinition<T> GetIDFilter(TKey id)
         {
-            if (_typeInfo.IsSubclassOf(typeof(Entity)))
+            if(_shouldConvertToObjectId)
                 return GetIDFilter(new ObjectId(id as string));
             return Builders<T>.Filter.Eq("_id", id);
         }

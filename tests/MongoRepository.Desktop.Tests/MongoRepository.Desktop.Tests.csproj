@@ -64,6 +64,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\DataContractAttribute.cs" />
+    <Compile Include="Entities\DataMemberAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryManagerTest.cs" />
     <Compile Include="RepositoryTest.cs" />

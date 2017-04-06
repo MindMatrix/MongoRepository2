@@ -57,6 +57,20 @@
         Task<T> AddAsync(T entity);
 
         /// <summary>
+        /// Upserts an entity.
+        /// </summary>
+        /// <param name="entity">The entity to upserted.</param>
+        /// <returns>The upserted entity.</returns>
+        T AddOrUpdate(T entity);
+
+        /// <summary>
+        /// Upserts an entity.
+        /// </summary>
+        /// <param name="entity">The entity to upserted.</param>
+        /// <returns>The upserted entity.</returns>
+        Task<T> AddOrUpdateAsync(T entity);
+
+        /// <summary>
         /// Adds the new entities in the repository.
         /// </summary>
         /// <param name="entities">The entities of type T.</param>
@@ -69,27 +83,39 @@
         Task AddAsync(IEnumerable<T> entities);
 
         /// <summary>
-        /// Upserts an entity.
+        /// Upserts the entities in the repository.
+        /// </summary>
+        /// <param name="entities">The entities of type T.</param>
+        void AddOrUpdate(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Upserts the entities in the repository.
+        /// </summary>
+        /// <param name="entities">The entities of type T.</param>
+        Task AddOrUpdateAsync(IEnumerable<T> entities);
+
+        /// <summary>
+        /// Updates an existing entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>The updated entity.</returns>
         T Update(T entity);
 
         /// <summary>
-        /// Upserts an entity.
+        /// Updates an existing entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>The updated entity.</returns>
         Task<T> UpdateAsync(T entity);
 
         /// <summary>
-        /// Upserts the entities.
+        /// Updates an existing range of entities.
         /// </summary>
         /// <param name="entities">The entities to update.</param>
         void Update(IEnumerable<T> entities);
 
         /// <summary>
-        /// Upserts the entities.
+        /// Updates an existing range of entities.
         /// </summary>
         /// <param name="entities">The entities to update.</param>
         Task UpdateAsync(IEnumerable<T> entities);

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using MongoRepository;
 using MongoRepositoryTests.Entities;
 using System;
@@ -63,9 +64,9 @@ namespace MongoRepositoryTests
             Assert.Equal(1, await _customerRepo.CountAsync());
         }
 
-#endregion Add
+        #endregion Add
 
-#region Update
+        #region Update
 
         [Fact]
         public void UpdateEntitySync()
@@ -92,6 +93,33 @@ namespace MongoRepositoryTests
                 var actual = _products.GetById(product1.Id);
                 Assert.Equal(product2.Price, actual.Price);
             }
+        }
+
+        [Fact]
+        public void UpdateEntityNoUpsertSync()
+        {
+            IRepository<Product> _products = CreateRandomRepository<Product>();
+            var product1 = new Product() { Id = ObjectId.GenerateNewId().ToString(), Name = "Product1", Description = "Product1", Price = 1 };
+            //var product2 = new Product() { Name = "Product2", Description = "Product2", Price = 1 };
+
+            _products.Update(product1);
+            //_products.Add(new Product[] { product1, product2 });
+
+            Assert.Equal(0, _products.Count());
+            //var product2 = new Product() { Id = product1.Id, Name = product1.Name, Description = product1.Description, Price = 2 };
+            ////var product4 = new Product() { Id = product2.Id, Name = product2.Name, Description = product2.Description, Price = 4 };
+
+            //_products.Update(product2);
+            //Assert.Equal(1, _products.Count());
+
+            //{
+            //    var actual = _products.GetById(product2.Id);
+            //    Assert.Equal(product2.Price, actual.Price);
+            //}
+            //{
+            //    var actual = _products.GetById(product1.Id);
+            //    Assert.Equal(product2.Price, actual.Price);
+            //}
         }
 
         [Fact]
@@ -156,9 +184,9 @@ namespace MongoRepositoryTests
             Assert.Equal(product2.Price, actual2.Price);
         }
 
-#endregion Update
+        #endregion Update
 
-#region Exists
+        #region Exists
 
         [Fact]
         public void ExistsSync()
@@ -208,9 +236,9 @@ namespace MongoRepositoryTests
             Assert.True(await _customerRepo.ExistsAsync(c => c.FirstName == "Exists" && c.LastName == "Async"));
         }
 
-#endregion Exists
+        #endregion Exists
 
-#region Delete
+        #region Delete
 
         [Fact]
         public void DeleteOneEntitySync()
@@ -335,7 +363,7 @@ namespace MongoRepositoryTests
             await _products.DeleteAsync(product1);
             Assert.Equal(1, await _products.CountAsync());
         }
-#endregion Delete
+        #endregion Delete
 
         [Fact]
         public void ComplexEntityTest()
@@ -456,7 +484,7 @@ namespace MongoRepositoryTests
             //var am = new MongoRepositoryManager<Animal>();
             var va = new Dog();
             //Assert.False(am.Exists);
-            a.Update(va);
+            a.AddOrUpdate(va);
             //Assert.True(am.Exists);
             Assert.IsType<Dog>(a.GetById(va.Id));
             //Assert.Equal(am.Name, "AnimalsTest");
@@ -466,7 +494,7 @@ namespace MongoRepositoryTests
             //var clm = new MongoRepositoryManager<CatLike>();
             var vcl = new Lion();
             //Assert.False(clm.Exists);
-            cl.Update(vcl);
+            cl.AddOrUpdate(vcl);
             //Assert.True(clm.Exists);
             Assert.IsType<Lion>(cl.GetById(vcl.Id));
             //Assert.Equal(clm.Name, "Catlikes");
@@ -476,7 +504,7 @@ namespace MongoRepositoryTests
             //var bm = new MongoRepositoryManager<Bird>();
             var vb = new Bird();
             //Assert.False(bm.Exists);
-            b.Update(vb);
+            b.AddOrUpdate(vb);
             //Assert.True(bm.Exists);
             Assert.IsType<Bird>(b.GetById(vb.Id));
             //Assert.Equal(bm.Name, "Birds");
@@ -486,7 +514,7 @@ namespace MongoRepositoryTests
             //var lm = new MongoRepositoryManager<Lion>();
             var vl = new Lion();
             //Assert.False(lm.Exists);   //Should already exist (created by cl)
-            l.Update(vl);
+            l.AddOrUpdate(vl);
             //Assert.True(lm.Exists);
             Assert.IsType<Lion>(l.GetById(vl.Id));
             //Assert.Equal(lm.Name, "Catlikes");
@@ -496,7 +524,7 @@ namespace MongoRepositoryTests
             //var dm = new MongoRepositoryManager<Dog>();
             var vd = new Dog();
             //Assert.False(dm.Exists);
-            d.Update(vd);
+            d.AddOrUpdate(vd);
             //Assert.True(dm.Exists);
             Assert.IsType<Dog>(d.GetById(vd.Id));
             //Assert.Equal(dm.Name, "AnimalsTest");
@@ -506,7 +534,7 @@ namespace MongoRepositoryTests
             //var mm = new MongoRepositoryManager<Bird>();
             var vm = new Macaw();
             //Assert.False(mm.Exists);
-            m.Update(vm);
+            m.AddOrUpdate(vm);
             //Assert.True(mm.Exists);
             Assert.IsType<Macaw>(m.GetById(vm.Id));
             //Assert.Equal(mm.Name, "Birds");
@@ -516,7 +544,7 @@ namespace MongoRepositoryTests
             //var wm = new MongoRepositoryManager<Whale>();
             var vw = new Whale();
             //Assert.False(wm.Exists);
-            w.Update(vw);
+            w.AddOrUpdate(vw);
             // Assert.True(wm.Exists);
             Assert.IsType<Whale>(w.GetById(vw.Id));
             //Assert.Equal(wm.Name, "Whale");
@@ -580,7 +608,7 @@ namespace MongoRepositoryTests
             //Assert.Equal("TestCustomers123", _curstomerRepoManager.Name);
         }
 
-#region Reproduce issue: https://mongorepository.codeplex.com/discussions/433878
+        #region Reproduce issue: https://mongorepository.codeplex.com/discussions/433878
         public abstract class BaseItem : IEntity
         {
             public string Id { get; set; }
@@ -597,9 +625,9 @@ namespace MongoRepositoryTests
         {
             var specialRepository = CreateRandomRepository<SpecialA>();
         }
-#endregion
+        #endregion
 
-#region Reproduce issue: https://mongorepository.codeplex.com/discussions/572382
+        #region Reproduce issue: https://mongorepository.codeplex.com/discussions/572382
         public abstract class ClassA : MongoRepository.Entity
         {
             public string Prop1 { get; set; }
@@ -628,7 +656,7 @@ namespace MongoRepositoryTests
             Assert.Equal(1, repo.OfType<ClassB>().Count());
             Assert.Equal(1, repo.OfType<ClassC>().Count());
         }
-#endregion
+        #endregion
 
     }
 }

@@ -28,12 +28,12 @@
             if (typeof(TKey) == typeof(string))
             {
                 var fieldInfo = _typeInfo.GetField("Id", BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.GetField | BindingFlags.FlattenHierarchy);
-                if(fieldInfo != null)
+                if (fieldInfo != null)
                     _shouldConvertToObjectId = fieldInfo.GetCustomAttribute(typeof(BsonRepresentationAttribute)) != null;
                 else
                 {
                     var propertyInfo = _typeInfo.GetProperty("Id");
-                    if(propertyInfo != null)
+                    if (propertyInfo != null)
                         _shouldConvertToObjectId = propertyInfo.GetCustomAttribute(typeof(BsonRepresentationAttribute)) != null;
                 }
             }
@@ -186,11 +186,11 @@
         }
 
         /// <summary>
-        /// Upserts an entity.
+        /// Upserts an entity
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <returns>The updated entity.</returns>
-        public virtual T Update(T entity)
+        /// <returns>The upserted entity.</returns>
+        public virtual T AddOrUpdate(T entity)
         {
             if (entity.Id == null)
                 this.Add(entity);
@@ -200,11 +200,11 @@
         }
 
         /// <summary>
-        /// Upserts an entity.
+        /// Upserts an entity
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <returns>The updated entity.</returns>
-        public async virtual Task<T> UpdateAsync(T entity)
+        /// <returns>The upserted entity.</returns>
+        public async virtual Task<T> AddOrUpdateAsync(T entity)
         {
             if (entity.Id == null)
                 await this.AddAsync(entity);
@@ -213,25 +213,69 @@
             return entity;
         }
 
-
         /// <summary>
-        /// Upserts the entities.
+        /// Upserts a range of entity.
         /// </summary>
-        /// <param name="entities">The entities to update.</param>
-        public virtual void Update(IEnumerable<T> entities)
+        /// <param name="entities">The entities to upserted.</param>
+        public virtual void AddOrUpdate(IEnumerable<T> entities)
         {
             foreach (T entity in entities)
                 this.collection.ReplaceOne(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
         }
 
         /// <summary>
-        /// Upserts the entities.
+        /// Upserts a range of entity.
+        /// </summary>
+        /// <param name="entities">The entities to upserted.</param>
+        public async virtual Task AddOrUpdateAsync(IEnumerable<T> entities)
+        {
+            foreach (T entity in entities)
+                await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
+        }
+
+        /// <summary>
+        /// Updates an existing entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
+        public virtual T Update(T entity)
+        {
+            if (entity.Id == null) throw new ArgumentNullException(nameof(entity.Id));
+            this.collection.ReplaceOne(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = false });
+            return entity;
+        }
+
+        /// <summary>
+        /// Updates an existing entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
+        public async virtual Task<T> UpdateAsync(T entity)
+        {
+            if (entity.Id == null) throw new ArgumentNullException(nameof(entity.Id));
+            await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = false });
+            return entity;
+        }
+
+
+        /// <summary>
+        /// Updates an existing entity.
+        /// </summary>
+        /// <param name="entities">The entities to update.</param>
+        public virtual void Update(IEnumerable<T> entities)
+        {
+            foreach (T entity in entities)
+                this.collection.ReplaceOne(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = false });
+        }
+
+        /// <summary>
+        /// Updates an existing entity.
         /// </summary>
         /// <param name="entities">The entities to update.</param>
         public async virtual Task UpdateAsync(IEnumerable<T> entities)
         {
             foreach (T entity in entities)
-                await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = true });
+                await this.collection.ReplaceOneAsync(GetIDFilter(entity.Id), entity, new UpdateOptions { IsUpsert = false });
         }
 
         /// <summary>
@@ -369,7 +413,7 @@
 
         private static FilterDefinition<T> GetIDFilter(TKey id)
         {
-            if(_shouldConvertToObjectId)
+            if (_shouldConvertToObjectId)
                 return GetIDFilter(new ObjectId(id as string));
             return Builders<T>.Filter.Eq("_id", id);
         }

@@ -14,8 +14,6 @@ namespace MongoRepository
         where TKey : IEquatable<TKey>
     {
 
-
-
         protected static readonly TypeInfo _typeInfo = typeof(T).GetTypeInfo();
 
         protected internal string collectionName;
@@ -121,6 +119,45 @@ namespace MongoRepository
         }
 
         /// <summary>
+        /// Upserts the entity in the repository.
+        /// </summary>
+        /// <param name="entity">The entity T.</param>
+        /// <returns>The upserted entity.</returns>
+        public virtual T AddOrUpdate(T entity)
+        {
+            if (entity.Id == null)
+                this.Add(entity);
+            else
+            {
+                var find = GetById(entity.Id);
+                if (find != null) collection.Remove(find);
+                collection.Add(entity);
+            }
+            return entity;
+        }
+
+        /// <summary>
+        /// Upserts the entity in the repository.
+        /// </summary>
+        /// <param name="entity">The entity T.</param>
+        /// <returns>The upserted entity.</returns>
+        public async Task<T> AddOrUpdateAsync(T entity)
+        {
+            return await Task.Run(() =>
+            {
+                if (entity.Id == null)
+                    this.Add(entity);
+                else
+                {
+                    var find = GetById(entity.Id);
+                    if (find != null) collection.Remove(find);
+                    collection.Add(entity);
+                }
+                return entity;
+            });
+        }
+
+        /// <summary>
         /// Adds the new entities in the repository.
         /// </summary>
         /// <param name="entities">The entities of type T.</param>
@@ -131,7 +168,6 @@ namespace MongoRepository
 
             collection.AddRange(entities);
         }
-
 
         /// <summary>
         /// Adds the new entities in the repository.
@@ -149,21 +185,30 @@ namespace MongoRepository
         }
 
         /// <summary>
-        /// Upserts an entity.
+        /// Upserts the entities in the repository.
         /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns>The updated entity.</returns>
-        public virtual T Update(T entity)
+        /// <param name="entities">The entities of type T.</param>
+        public virtual void AddOrUpdate(IEnumerable<T> entities)
         {
-            if (entity.Id == null)
-                this.Add(entity);
-            else
+            foreach (var entity in entities)
+                if (entity.Id == null) entity.Id = GenerateID();
+
+            collection.AddRange(entities);
+        }
+
+        /// <summary>
+        /// Upserts the entities in the repository.
+        /// </summary>
+        /// <param name="entities">The entities of type T.</param>
+        public async virtual Task AddOrUpdateAsync(IEnumerable<T> entities)
+        {
+            await Task.Run(() =>
             {
-                var find = GetById(entity.Id);
-                if (find != null) collection.Remove(find);
-                collection.Add(entity);
-            }
-            return entity;
+                foreach (var entity in entities)
+                    if (entity.Id == null) entity.Id = GenerateID();
+
+                collection.AddRange(entities);
+            });
         }
 
         /// <summary>
@@ -171,16 +216,33 @@ namespace MongoRepository
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>The updated entity.</returns>
+        public virtual T Update(T entity)
+        {
+            if (entity.Id == null) throw new ArgumentNullException(nameof(entity.Id));
+
+            var find = GetById(entity.Id);
+            if (find != null)
+            {
+                collection.Remove(find);
+                collection.Add(entity);
+            }
+            return entity;
+        }
+
+        /// <summary>
+        /// Updates an existing entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns>The updated entity.</returns>
         public async virtual Task<T> UpdateAsync(T entity)
         {
+            if (entity.Id == null) throw new ArgumentNullException(nameof(entity.Id));
             return await Task.Run(() =>
             {
-                if (entity.Id == null)
-                    this.Add(entity);
-                else
+                var find = GetById(entity.Id);
+                if (find != null)
                 {
-                    var find = GetById(entity.Id);
-                    if (find != null) collection.Remove(find);
+                    collection.Remove(find);
                     collection.Add(entity);
                 }
                 return entity;

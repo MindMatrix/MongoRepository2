@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp1.0;netcoreapp1.1;;netstandard1.5;netstandard1.6;net46</TargetFrameworks>
+    <!--<TargetFrameworkVersion>1.0</TargetFrameworkVersion>-->
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Company>MindMatrix Inc.</Company>
+    <Authors>Chris Phillips</Authors>
+    <PackageLicenseUrl>https://github.com/MindMatrix/MongoRepository2/blob/master/LICENSE.md</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/MindMatrix/MongoRepository2</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/MindMatrix/MongoRepository2</PackageProjectUrl>
+    <PackageTags>MongoDB Repository</PackageTags>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Framework)'=='net46'">
+    <DefineConstants>$(DefineConstants);DESKTOP=true</DefineConstants>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.4.3" />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" Condition="'$(DESKTOP)'==''" />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" Condition="'$(DESKTOP)'==''" />
+    <Reference Include="System.Runtime.Serialization" Condition="'$(DESKTOP)'=='true'" />
+  </ItemGroup>
+</Project>

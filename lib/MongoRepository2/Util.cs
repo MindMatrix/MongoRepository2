@@ -143,7 +143,7 @@
         /// <returns>Returns the collectionname from the specified type.</returns>
         private static string GetCollectionNameFromType(Type entitytype)
         {
-            string collectionname;
+            var collectionname = string.Empty;
 
             var typeInfo = entitytype.GetTypeInfo();
             // Check to see if the object (inherited from Entity) has a CollectionName attribute
@@ -151,22 +151,15 @@
             if (att != null)
             {
                 // It does! Return the value specified by the CollectionName attribute
-                collectionname = ((CollectionName)att).Name;
+                collectionname = att.Name;
             }
             else
             {
+                // Use the base type if it is assignable from type of Entity
                 if (typeof(Entity).GetTypeInfo().IsAssignableFrom(entitytype))
                 {
-                    // No attribute found, get the basetype. Recursively descend the type hierarchy 
-                    // until the last base type (deriving from Entity) is found.
-                    if (typeof(Entity).GetTypeInfo().IsAssignableFrom(entitytype))
-                        while (entitytype.GetTypeInfo().BaseType != typeof(Entity))
-                        {
-                            entitytype = typeInfo.BaseType;
-                        }
+                    collectionname = entitytype.Name;
                 }
-
-                collectionname = entitytype.Name;
             }
 
             return collectionname;

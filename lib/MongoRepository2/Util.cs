@@ -32,7 +32,7 @@
         private static IMongoDatabase GetDatabaseFromUrl(MongoUrl url)
         {
             var client = new MongoClient(url);
-            
+
             return client.GetDatabase(url.DatabaseName); // WriteConcern defaulted to Acknowledged
         }
 
@@ -143,7 +143,7 @@
         /// <returns>Returns the collectionname from the specified type.</returns>
         private static string GetCollectionNameFromType(Type entitytype)
         {
-            string collectionname;
+            var collectionname = string.Empty;
 
             var typeInfo = entitytype.GetTypeInfo();
             // Check to see if the object (inherited from Entity) has a CollectionName attribute
@@ -151,19 +151,15 @@
             if (att != null)
             {
                 // It does! Return the value specified by the CollectionName attribute
-                collectionname = ((CollectionName)att).Name;
+                collectionname = att.Name;
             }
             else
             {
+                // Use the base type if it is assignable from type of Entity
                 if (typeof(Entity).GetTypeInfo().IsAssignableFrom(entitytype))
                 {
-                    // No attribute found, get the basetype
-                    while (!typeInfo.BaseType.Equals(typeof(Entity)))
-                    {
-                        entitytype = typeInfo.BaseType;
-                    }
+                    collectionname = entitytype.Name;
                 }
-                collectionname = entitytype.Name;
             }
 
             return collectionname;

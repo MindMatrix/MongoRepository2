@@ -32,7 +32,7 @@
         private static IMongoDatabase GetDatabaseFromUrl(MongoUrl url)
         {
             var client = new MongoClient(url);
-            
+
             return client.GetDatabase(url.DatabaseName); // WriteConcern defaulted to Acknowledged
         }
 
@@ -157,12 +157,15 @@
             {
                 if (typeof(Entity).GetTypeInfo().IsAssignableFrom(entitytype))
                 {
-                    // No attribute found, get the basetype
-                    while (!typeInfo.BaseType.Equals(typeof(Entity)))
-                    {
-                        entitytype = typeInfo.BaseType;
-                    }
+                    // No attribute found, get the basetype. Recursively descend the type hierarchy 
+                    // until the last base type (deriving from Entity) is found.
+                    if (typeof(Entity).GetTypeInfo().IsAssignableFrom(entitytype))
+                        while (entitytype.GetTypeInfo().BaseType != typeof(Entity))
+                        {
+                            entitytype = typeInfo.BaseType;
+                        }
                 }
+
                 collectionname = entitytype.Name;
             }
 
